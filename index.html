@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario de Equipos</title>
+<style>
+  :root{
+    --bg:#0f1720;
+    --panel:#151f2b;
+    --panel-2:#1b2733;
+    --border:#263241;
+    --text:#e6edf3;
+    --muted:#8b9bab;
+    --accent:#3aa6a6;
+    --accent-2:#4f7cff;
+    --ok:#3ecf8e;
+    --warn:#e0a13b;
+    --bad:#e05a5a;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+  }
+  header{
+    padding:22px 28px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+    background:linear-gradient(180deg,#121a24,#0f1720);
+  }
+  header h1{
+    margin:0;
+    font-size:1.35rem;
+    letter-spacing:.3px;
+  }
+  header .sub{color:var(--muted); font-size:.85rem; margin-top:2px;}
+  .header-actions{display:flex; gap:10px; flex-wrap:wrap;}
+  main{padding:24px 28px; max-width:1400px; margin:0 auto;}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px,1fr));
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .stat-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:14px 16px;
+  }
+  .stat-card .num{font-size:1.6rem; font-weight:700;}
+  .stat-card .lbl{color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.5px;}
+
+  .toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    margin-bottom:16px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px;
+  }
+  .toolbar input[type=text], .toolbar select{
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:.88rem;
+  }
+  .toolbar input[type=text]{flex:1; min-width:180px;}
+  .spacer{flex:1;}
+
+  button{
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+    padding:9px 14px;
+    font-size:.85rem;
+    font-weight:600;
+    transition:filter .15s ease;
+  }
+  button:hover{filter:brightness(1.12);}
+  .btn-primary{background:var(--accent-2); color:#fff;}
+  .btn-secondary{background:var(--panel-2); color:var(--text); border:1px solid var(--border);}
+  .btn-ok{background:var(--ok); color:#04241a;}
+  .btn-danger{background:transparent; color:var(--bad); border:1px solid var(--bad);}
+  .btn-small{padding:5px 9px; font-size:.75rem;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+    font-size:.87rem;
+  }
+  thead{background:var(--panel-2);}
+  th, td{
+    padding:10px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  tbody tr:hover{background:#1a2531;}
+  .tag{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:20px;
+    font-size:.72rem;
+    font-weight:600;
+  }
+  .tag-activo{background:rgba(62,207,142,.15); color:var(--ok);}
+  .tag-mantenimiento{background:rgba(224,161,59,.15); color:var(--warn);}
+  .tag-baja{background:rgba(224,90,90,.15); color:var(--bad);}
+  .tag-bodega{background:rgba(79,124,255,.15); color:var(--accent-2);}
+  .monitor-pill{
+    display:inline-block;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    padding:1px 7px;
+    border-radius:6px;
+    font-size:.72rem;
+    margin:1px 3px 1px 0;
+    color:var(--muted);
+  }
+  .actions-cell{white-space:nowrap;}
+  .empty-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--muted);
+  }
+
+  /* Modal */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 16px;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    width:100%;
+    max-width:560px;
+    padding:22px;
+  }
+  .modal h2{margin-top:0; font-size:1.1rem;}
+  .form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .form-grid .full{grid-column:1/-1;}
+  label{
+    display:block;
+    font-size:.78rem;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  input[type=text], input[type=date], select, input[type=number]{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:.88rem;
+  }
+  fieldset{
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px;
+    margin-top:6px;
+  }
+  legend{padding:0 6px; font-size:.8rem; color:var(--muted);}
+  .monitor-block{
+    border:1px dashed var(--border);
+    border-radius:8px;
+    padding:10px;
+    margin-bottom:8px;
+  }
+  .monitor-block-header{
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;
+  }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:18px;
+  }
+  .hint{
+    font-size:.78rem;
+    color:var(--muted);
+    margin-top:14px;
+    line-height:1.4;
+  }
+  #loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .login-box{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px;
+    width:100%;
+    max-width:360px;
+  }
+  .login-box h1{font-size:1.2rem; margin-top:0;}
+  .login-box label{margin-top:10px;}
+  .login-error{
+    color:var(--bad);
+    font-size:.82rem;
+    margin-top:10px;
+    min-height:1.2em;
+  }
+  #appRoot{display:none;}
+  .status-dot{
+    display:inline-block;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--ok);
+    margin-right:6px;
+  }
+  .status-dot.off{background:var(--bad);}
+  @media (max-width:640px){
+    .form-grid{grid-template-columns:1fr;}
+    table, thead, tbody, th, td, tr{display:block;}
+    thead{display:none;}
+    tbody tr{border-bottom:1px solid var(--border); padding:8px 0;}
+    td{border:none; padding:4px 0;}
+    td::before{content:attr(data-label); display:block; font-size:.7rem; color:var(--muted); text-transform:uppercase;}
+  }
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>Inventario de Equipos</h1>
+    <div class="sub" style="color:var(--muted); font-size:.85rem; margin-bottom:6px;">Ingresa con tu cuenta corporativa</div>
+    <form id="loginForm">
+      <label>Correo</label>
+      <input type="text" id="loginEmail" required autocomplete="username">
+      <label>Contraseña</label>
+      <input type="password" id="loginPassword" required autocomplete="current-password">
+      <div class="login-error" id="loginError"></div>
+      <div class="modal-actions" style="justify-content:stretch; margin-top:14px;">
+        <button type="submit" class="btn-primary" style="width:100%;">Iniciar sesión</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="appRoot">
+<header>
+  <div>
+    <h1>Inventario de Equipos</h1>
+    <div class="sub"><span class="status-dot" id="syncDot"></span><span id="syncLabel">Conectado</span> · Portátiles y equipos de escritorio · múltiples sedes</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-secondary" id="btnExport">Exportar JSON</button>
+    <button class="btn-secondary" id="btnExportCsv">Exportar CSV</button>
+    <button class="btn-secondary" id="btnImportTrigger">Importar JSON</button>
+    <input type="file" id="fileImport" accept=".json" style="display:none;">
+    <button class="btn-primary" id="btnNuevo">+ Nuevo equipo</button>
+    <button class="btn-secondary" id="btnLogout">Cerrar sesión</button>
+  </div>
+</header>
+
+<main>
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <input type="text" id="fBuscar" placeholder="Buscar por serial, marca, modelo, usuario...">
+    <select id="fSede"><option value="">Todas las sedes</option></select>
+    <select id="fTipo">
+      <option value="">Todos los tipos</option>
+      <option value="Portátil">Portátil</option>
+      <option value="Escritorio">Escritorio</option>
+    </select>
+    <select id="fEstado">
+      <option value="">Todos los estados</option>
+      <option value="Activo">Activo</option>
+      <option value="En mantenimiento">En mantenimiento</option>
+      <option value="En bodega">En bodega</option>
+      <option value="Dado de baja">Dado de baja</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn-secondary btn-small" id="btnLimpiar">Limpiar filtros</button>
+  </div>
+
+  <div id="tableWrap"></div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">Nuevo equipo</h2>
+    <form id="equipoForm">
+      <input type="hidden" id="equipoId">
+      <div class="form-grid">
+        <div>
+          <label>Tipo de equipo</label>
+          <select id="tipo" required>
+            <option value="Portátil">Portátil</option>
+            <option value="Escritorio">Escritorio</option>
+          </select>
+        </div>
+        <div>
+          <label>Estado</label>
+          <select id="estado" required>
+            <option value="Activo">Activo</option>
+            <option value="En mantenimiento">En mantenimiento</option>
+            <option value="En bodega">En bodega</option>
+            <option value="Dado de baja">Dado de baja</option>
+          </select>
+        </div>
+        <div>
+          <label>Marca</label>
+          <input type="text" id="marca" placeholder="Dell, HP, Lenovo..." required>
+        </div>
+        <div>
+          <label>Modelo</label>
+          <input type="text" id="modelo" placeholder="Latitude 5420..." required>
+        </div>
+        <div>
+          <label>Número de serie</label>
+          <input type="text" id="serial" required>
+        </div>
+        <div>
+          <label>Código de activo / placa</label>
+          <input type="text" id="placa">
+        </div>
+        <div>
+          <label>Sede</label>
+          <input type="text" id="sede" list="listaSedes" placeholder="Bogotá, Medellín..." required>
+          <datalist id="listaSedes"></datalist>
+        </div>
+        <div>
+          <label>Área / departamento</label>
+          <input type="text" id="area" placeholder="NOC, Contabilidad...">
+        </div>
+        <div>
+          <label>Usuario asignado</label>
+          <input type="text" id="usuario">
+        </div>
+        <div class="full">
+          <label>Observaciones</label>
+          <input type="text" id="observaciones" placeholder="Notas, garantía, etc.">
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Monitores asociados</legend>
+        <div>
+          <label>Cantidad de monitores</label>
+          <select id="numMonitores">
+            <option value="0">0 — no aplica</option>
+            <option value="1">1 monitor</option>
+            <option value="2">2 monitores</option>
+          </select>
+        </div>
+        <div id="monitoresContainer" style="margin-top:10px;"></div>
+      </fieldset>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="btn-ok">Guardar equipo</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+
+<script>
+// ============ CONFIGURACIÓN DE FIREBASE ============
+// Reemplaza estos valores por los de tu proyecto en Firebase Console
+// (Configuración del proyecto → Tus apps → Config del SDK)
+const firebaseConfig = {
+  apiKey: "AIzaSyCzabPdUqyrfhjVQYZwFCj6hWpHTLe__G8",
+  authDomain: "inventario-ptmg.firebaseapp.com",
+  projectId: "inventario-ptmg",
+  storageBucket: "inventario-ptmg.firebasestorage.app",
+  messagingSenderId: "548041876559",
+  appId: "1:548041876559:web:1bd8815d958b911fae763a"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const equiposRef = db.collection('equipos');
+// ====================================================
+
+let equipos = [];
+let unsubscribeSnapshot = null;
+
+function uid(){
+  return 'eq_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+// ---------- Login ----------
+const loginScreen = document.getElementById('loginScreen');
+const appRoot = document.getElementById('appRoot');
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+
+loginForm.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  loginError.textContent = '';
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  auth.signInWithEmailAndPassword(email, password)
+    .catch(err=>{
+      loginError.textContent = 'Correo o contraseña incorrectos.';
+    });
+});
+
+document.getElementById('btnLogout').addEventListener('click', ()=>{
+  auth.signOut();
+});
+
+auth.onAuthStateChanged(user=>{
+  if(user){
+    loginScreen.style.display = 'none';
+    appRoot.style.display = 'block';
+    escucharCambios();
+  } else {
+    loginScreen.style.display = 'flex';
+    appRoot.style.display = 'none';
+    if(unsubscribeSnapshot){ unsubscribeSnapshot(); unsubscribeSnapshot = null; }
+    equipos = [];
+  }
+});
+
+// ---------- Datos en tiempo real desde Firestore ----------
+function escucharCambios(){
+  if(unsubscribeSnapshot) return;
+  const syncDot = document.getElementById('syncDot');
+  const syncLabel = document.getElementById('syncLabel');
+  unsubscribeSnapshot = equiposRef.onSnapshot(
+    (snapshot)=>{
+      equipos = snapshot.docs.map(d=> ({ id: d.id, ...d.data() }));
+      syncDot.classList.remove('off');
+      syncLabel.textContent = 'Conectado';
+      renderAll();
+    },
+    (error)=>{
+      syncDot.classList.add('off');
+      syncLabel.textContent = 'Sin conexión con la base de datos';
+      console.error(error);
+    }
+  );
+}
+
+async function guardarEquipoEnDB(equipo){
+  const { id, ...datos } = equipo;
+  await equiposRef.doc(id).set(datos);
+}
+async function eliminarEquipoEnDB(id){
+  await equiposRef.doc(id).delete();
+}
+
+// ---------- Monitores dinámicos en el formulario ----------
+const numMonitoresSel = document.getElementById('numMonitores');
+const monitoresContainer = document.getElementById('monitoresContainer');
+
+function renderMonitorFields(cantidad, datos){
+  monitoresContainer.innerHTML = '';
+  for(let i=0; i<cantidad; i++){
+    const d = (datos && datos[i]) || {marca:'', modelo:'', serial:''};
+    const block = document.createElement('div');
+    block.className = 'monitor-block';
+    block.innerHTML = `
+      <div class="monitor-block-header"><strong>Monitor ${i+1}</strong></div>
+      <div class="form-grid">
+        <div><label>Marca</label><input type="text" class="mon-marca" value="${escapeAttr(d.marca)}"></div>
+        <div><label>Modelo</label><input type="text" class="mon-modelo" value="${escapeAttr(d.modelo)}"></div>
+        <div class="full"><label>Serial</label><input type="text" class="mon-serial" value="${escapeAttr(d.serial)}"></div>
+      </div>
+    `;
+    monitoresContainer.appendChild(block);
+  }
+}
+numMonitoresSel.addEventListener('change', ()=> renderMonitorFields(parseInt(numMonitoresSel.value,10)));
+
+function leerMonitoresDelForm(){
+  const bloques = monitoresContainer.querySelectorAll('.monitor-block');
+  return Array.from(bloques).map(b=>({
+    marca: b.querySelector('.mon-marca').value.trim(),
+    modelo: b.querySelector('.mon-modelo').value.trim(),
+    serial: b.querySelector('.mon-serial').value.trim(),
+  }));
+}
+
+function escapeAttr(str){
+  return (str||'').replace(/"/g,'&quot;');
+}
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+// ---------- Modal ----------
+const overlay = document.getElementById('overlay');
+const form = document.getElementById('equipoForm');
+const modalTitle = document.getElementById('modalTitle');
+
+function abrirModal(equipo){
+  form.reset();
+  document.getElementById('equipoId').value = equipo ? equipo.id : '';
+  modalTitle.textContent = equipo ? 'Editar equipo' : 'Nuevo equipo';
+
+  if(equipo){
+    document.getElementById('tipo').value = equipo.tipo;
+    document.getElementById('estado').value = equipo.estado;
+    document.getElementById('marca').value = equipo.marca;
+    document.getElementById('modelo').value = equipo.modelo;
+    document.getElementById('serial').value = equipo.serial;
+    document.getElementById('placa').value = equipo.placa || '';
+    document.getElementById('sede').value = equipo.sede;
+    document.getElementById('area').value = equipo.area || '';
+    document.getElementById('usuario').value = equipo.usuario || '';
+    document.getElementById('observaciones').value = equipo.observaciones || '';
+    const cant = equipo.monitores ? equipo.monitores.length : 0;
+    numMonitoresSel.value = String(cant);
+    renderMonitorFields(cant, equipo.monitores);
+  } else {
+    numMonitoresSel.value = '0';
+    renderMonitorFields(0);
+  }
+  overlay.classList.add('open');
+}
+function cerrarModal(){
+  overlay.classList.remove('open');
+}
+document.getElementById('btnNuevo').addEventListener('click', ()=> abrirModal(null));
+document.getElementById('btnCancelar').addEventListener('click', cerrarModal);
+overlay.addEventListener('click', (e)=>{ if(e.target === overlay) cerrarModal(); });
+
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const id = document.getElementById('equipoId').value || uid();
+  const equipo = {
+    id,
+    tipo: document.getElementById('tipo').value,
+    estado: document.getElementById('estado').value,
+    marca: document.getElementById('marca').value.trim(),
+    modelo: document.getElementById('modelo').value.trim(),
+    serial: document.getElementById('serial').value.trim(),
+    placa: document.getElementById('placa').value.trim(),
+    sede: document.getElementById('sede').value.trim(),
+    area: document.getElementById('area').value.trim(),
+    usuario: document.getElementById('usuario').value.trim(),
+    observaciones: document.getElementById('observaciones').value.trim(),
+    monitores: leerMonitoresDelForm(),
+  };
+
+  try{
+    await guardarEquipoEnDB(equipo);
+    cerrarModal();
+  }catch(err){
+    alert('No se pudo guardar el equipo. Revisa tu conexión e inténtalo de nuevo.');
+    console.error(err);
+  }
+});
+
+// ---------- Eliminar ----------
+async function eliminarEquipo(id){
+  const eq = equipos.find(e=>e.id===id);
+  if(!eq) return;
+  if(confirm(`¿Eliminar el equipo ${eq.marca} ${eq.modelo} (${eq.serial})? Esta acción no se puede deshacer.`)){
+    try{
+      await eliminarEquipoEnDB(id);
+    }catch(err){
+      alert('No se pudo eliminar el equipo. Revisa tu conexión e inténtalo de nuevo.');
+      console.error(err);
+    }
+  }
+}
+
+// ---------- Filtros ----------
+const fBuscar = document.getElementById('fBuscar');
+const fSede = document.getElementById('fSede');
+const fTipo = document.getElementById('fTipo');
+const fEstado = document.getElementById('fEstado');
+[fBuscar, fSede, fTipo, fEstado].forEach(el=> el.addEventListener('input', renderTabla));
+document.getElementById('btnLimpiar').addEventListener('click', ()=>{
+  fBuscar.value=''; fSede.value=''; fTipo.value=''; fEstado.value='';
+  renderTabla();
+});
+
+function actualizarSelectSedes(){
+  const sedes = [...new Set(equipos.map(e=>e.sede).filter(Boolean))].sort();
+  fSede.innerHTML = '<option value="">Todas las sedes</option>' + sedes.map(s=>`<option value="${escapeAttr(s)}">${escapeHtml(s)}</option>`).join('');
+  document.getElementById('listaSedes').innerHTML = sedes.map(s=>`<option value="${escapeAttr(s)}">`).join('');
+}
+
+function filtrarEquipos(){
+  const texto = fBuscar.value.toLowerCase();
+  return equipos.filter(e=>{
+    if(fSede.value && e.sede !== fSede.value) return false;
+    if(fTipo.value && e.tipo !== fTipo.value) return false;
+    if(fEstado.value && e.estado !== fEstado.value) return false;
+    if(texto){
+      const blob = [e.marca,e.modelo,e.serial,e.usuario,e.placa,e.area].join(' ').toLowerCase();
+      if(!blob.includes(texto)) return false;
+    }
+    return true;
+  });
+}
+
+function tagClase(estado){
+  return {
+    'Activo':'tag-activo',
+    'En mantenimiento':'tag-mantenimiento',
+    'Dado de baja':'tag-baja',
+    'En bodega':'tag-bodega',
+  }[estado] || 'tag-activo';
+}
+
+function renderTabla(){
+  const lista = filtrarEquipos();
+  const wrap = document.getElementById('tableWrap');
+  if(lista.length === 0){
+    wrap.innerHTML = `<div class="empty-state">No hay equipos que coincidan con los filtros.<br>${equipos.length===0 ? 'Agrega el primer equipo con el botón "Nuevo equipo".' : ''}</div>`;
+    return;
+  }
+  const filas = lista.map(e=>{
+    const monitores = (e.monitores||[]).map((m,i)=>`<span class="monitor-pill">M${i+1}: ${escapeHtml(m.marca)} ${escapeHtml(m.modelo)}${m.serial ? ' · '+escapeHtml(m.serial):''}</span>`).join(' ') || '<span style="color:var(--muted)">—</span>';
+    return `
+      <tr>
+        <td data-label="Tipo">${escapeHtml(e.tipo)}</td>
+        <td data-label="Marca/Modelo"><strong>${escapeHtml(e.marca)}</strong> ${escapeHtml(e.modelo)}<br><span style="color:var(--muted); font-size:.78rem;">S/N: ${escapeHtml(e.serial)}${e.placa? ' · Placa: '+escapeHtml(e.placa):''}</span></td>
+        <td data-label="Sede">${escapeHtml(e.sede)}${e.area ? '<br><span style="color:var(--muted); font-size:.78rem;">'+escapeHtml(e.area)+'</span>' : ''}</td>
+        <td data-label="Usuario">${escapeHtml(e.usuario) || '<span style="color:var(--muted)">Sin asignar</span>'}</td>
+        <td data-label="Estado"><span class="tag ${tagClase(e.estado)}">${escapeHtml(e.estado)}</span></td>
+        <td data-label="Monitores">${monitores}</td>
+        <td data-label="Acciones" class="actions-cell">
+          <button class="btn-secondary btn-small" onclick="editarEquipo('${e.id}')">Editar</button>
+          <button class="btn-danger btn-small" onclick="eliminarEquipo('${e.id}')">Eliminar</button>
+        </td>
+      </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th><th>Marca / Modelo</th><th>Sede</th><th>Usuario</th><th>Estado</th><th>Monitores</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>${filas}</tbody>
+    </table>`;
+}
+function editarEquipo(id){
+  const eq = equipos.find(e=>e.id===id);
+  if(eq) abrirModal(eq);
+}
+
+function renderStats(){
+  const total = equipos.length;
+  const portatiles = equipos.filter(e=>e.tipo==='Portátil').length;
+  const escritorio = equipos.filter(e=>e.tipo==='Escritorio').length;
+  const activos = equipos.filter(e=>e.estado==='Activo').length;
+  const monitoresTotal = equipos.reduce((acc,e)=> acc + (e.monitores? e.monitores.length : 0), 0);
+  const sedes = new Set(equipos.map(e=>e.sede).filter(Boolean)).size;
+
+  const cards = [
+    ['Total equipos', total],
+    ['Portátiles', portatiles],
+    ['Escritorio', escritorio],
+    ['Activos', activos],
+    ['Monitores asociados', monitoresTotal],
+    ['Sedes registradas', sedes],
+  ];
+  document.getElementById('stats').innerHTML = cards.map(([lbl,num])=>`
+    <div class="stat-card"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>
+  `).join('');
+}
+
+function renderAll(){
+  actualizarSelectSedes();
+  renderStats();
+  renderTabla();
+}
+
+// ---------- Exportar / Importar ----------
+document.getElementById('btnExport').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(equipos, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `inventario_equipos_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('btnExportCsv').addEventListener('click', ()=>{
+  const headers = ['Tipo','Marca','Modelo','Serial','Placa','Sede','Area','Usuario','Estado','Observaciones','Monitor1_Marca','Monitor1_Modelo','Monitor1_Serial','Monitor2_Marca','Monitor2_Modelo','Monitor2_Serial'];
+  const filas = equipos.map(e=>{
+    const m1 = (e.monitores && e.monitores[0]) || {};
+    const m2 = (e.monitores && e.monitores[1]) || {};
+    return [e.tipo,e.marca,e.modelo,e.serial,e.placa,e.sede,e.area,e.usuario,e.estado,e.observaciones,
+      m1.marca||'', m1.modelo||'', m1.serial||'', m2.marca||'', m2.modelo||'', m2.serial||''
+    ].map(v=> `"${String(v||'').replace(/"/g,'""')}"`).join(',');
+  });
+  const csv = [headers.join(','), ...filas].join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `inventario_equipos_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('btnImportTrigger').addEventListener('click', ()=>{
+  document.getElementById('fileImport').click();
+});
+document.getElementById('fileImport').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async (ev)=>{
+    try{
+      const datos = JSON.parse(ev.target.result);
+      if(!Array.isArray(datos)) throw new Error('Formato inválido');
+
+      const reemplazar = confirm(`Se encontraron ${datos.length} equipos en el archivo. ¿Reemplazar el inventario actual? (Cancelar para combinar en lugar de reemplazar)`);
+
+      if(reemplazar){
+        const actuales = await equiposRef.get();
+        const batchDelete = db.batch();
+        actuales.forEach(doc=> batchDelete.delete(doc.ref));
+        await batchDelete.commit();
+      }
+
+      const batchWrite = db.batch();
+      datos.forEach(d=>{
+        const id = d.id || uid();
+        const { id: _omit, ...resto } = d;
+        batchWrite.set(equiposRef.doc(id), resto, { merge: !reemplazar });
+      });
+      await batchWrite.commit();
+      alert('Importación completada.');
+    }catch(err){
+      alert('No se pudo leer o subir el archivo. Verifica que sea un JSON exportado desde esta misma herramienta.');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// ---------- Inicio ----------
+// La app se inicializa cuando el usuario inicia sesión (ver auth.onAuthStateChanged)
+</script>
+</body>
+</html>

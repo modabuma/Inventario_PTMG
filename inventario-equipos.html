@@ -402,18 +402,27 @@
 // ============ CONFIGURACIÓN DE FIREBASE ============
 // Reemplaza estos valores por los de tu proyecto en Firebase Console
 // (Configuración del proyecto → Tus apps → Config del SDK)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyCzabPdUqyrfhjVQYZwFCj6hWpHTLe__G8",
+  authDomain: "inventario-ptmg.firebaseapp.com",
+  projectId: "inventario-ptmg",
+  storageBucket: "inventario-ptmg.firebasestorage.app",
+  messagingSenderId: "548041876559",
+  appId: "1:548041876559:web:1bd8815d958b911fae763a",
+  measurementId: "G-2YSMF1TDGH"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const equiposRef = db.collection('equipos');
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // ====================================================
 
 let equipos = [];

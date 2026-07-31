@@ -220,22 +220,66 @@
     align-items:center;
     justify-content:center;
     padding:20px;
+    background:#f5f6f8;
   }
   .login-box{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:28px;
+    background:#ffffff;
+    border:1px solid #e4e7eb;
+    border-radius:14px;
+    padding:40px 36px 32px;
     width:100%;
-    max-width:360px;
+    max-width:340px;
+    box-shadow:0 12px 32px rgba(22,48,82,.08);
+    text-align:center;
   }
-  .login-box h1{font-size:1.2rem; margin-top:0;}
-  .login-box label{margin-top:10px;}
+  .login-logo{
+    display:block;
+    margin:0 auto 14px;
+    height:44px;
+    width:auto;
+  }
+  .login-bar{
+    display:block;
+    margin:0 auto 28px;
+    height:4px;
+    width:60px;
+    image-rendering:pixelated;
+  }
+  #loginForm{text-align:left;}
+  #loginForm input{
+    display:block;
+    width:100%;
+    background:#f5f6f8;
+    border:1px solid #dfe3e8;
+    color:#16324f;
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:.9rem;
+    margin-bottom:12px;
+  }
+  #loginForm input:focus{
+    outline:none;
+    border-color:#16324f;
+  }
+  .login-btn{
+    width:100%;
+    background:#16324f;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-size:.9rem;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:4px;
+  }
+  .login-btn:hover{filter:brightness(1.15);}
   .login-error{
     color:var(--bad);
     font-size:.82rem;
-    margin-top:10px;
     min-height:1.2em;
+    margin-bottom:4px;
+    text-align:center;
   }
   #appRoot{display:none;}
   .status-dot{
@@ -282,17 +326,13 @@
 
 <div id="loginScreen">
   <div class="login-box">
-    <h1>Inventario de Equipos</h1>
-    <div class="sub" style="color:var(--muted); font-size:.85rem; margin-bottom:6px;">Ingresa con tu cuenta corporativa</div>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApsAAACQCAYAAABHyqCOAAAeUElEQVR4nO3dIYzcSNYH8P+dwg7MIoMDN3hXupZpQC8esENMEmmbD5jFs9IEz0g3OAOG90oTYtIBg9Mg1OpPyuIOOGC0DY5/oJ4TZ9K2n+1yuVz+/6QDl+3E7u5q+/nVq1fAzERxch7FyenY50FEREQ0B38f+wRG8B8A12OfBBEREdEczCrYjOLkDYBTAKsoThZjnw8RERFR6GYTbEZxcgLgsvRHd2OdCxEREdFczCbYhAkuT0r/fxnFyflYJ0NEREQ0B7MINmVB0OrIf/qP63MhIiIimpNZBJsAHir+/FTqOImIiIhoAMEHm1GcrAAsa15yyVZIRERERMMIOtiURUFNC4FOUJ35JCIiIqIegg428f2ioCpcLEREREQ0gL+NfQJDieJkCeCpxV85APgxz9LDQKdERERENDshZzbb9tHkdDoRERGRZUEGm7LCvMsOQeecTiciIiKyJ7hpdNmG8mPNS7YA/gWzbeUxnE4nIiIisiSozKasPn+seckBwIX8rwqn04mIiIgsCSrYBPAG1RlLALjJs3SfZ+kWwH3N686lPycRERER9RBMsCm1lpc1L9nmWVoOMG8A7Gtef8dm70RERET9BBFsyvR53dR3MX3+hdRkNk2n103JExEREVGDIIJNAO9Q37z9Is/S77KYMp1+W/P3Ftw7nYiIiKi7ya9Gj+LkEvU9Ndd5ltZlMBHFyUfUt0o6k8CUiIiIiFqYdGZT2hzVBZp7AFeKf+o1zFR7lXcyVU9ERERELUw22FS0OQKA15p+mTLFXheUnsBM1RMRERFRC5MNNmEWBNWtFr/Ks3Sn/cfyLF0DWNe8ZClT9kRERESkNMlgU3pg1m0ruXnW5kjrCs3tkLpsg0lEREQ0S5MLNhV1mk0tjSrJlPvrhpc9sX6TiIiISGdSwWapn2ZdsPeqz77mMvXO+k0iIiIiCyYVbMJkNOumsW9ttCiSKfhNzUuW7L9JRERE1GwywabUadbtV77Ns/TG4iEvUF+/eR3FydLi8YiIiIiCM4lgU1mn+crmMZX1m+y/SURERFTD+2DTRZ1mFdZvEhEREfXjfbAJR3WaVVi/SURERNSd18Gmok5zY7lOswrrN4mIiIg68DbYVO573qmfZlus3yQiIiLqxstgU1mnqdr33BbWbxIRERG152WwieY6zVb7ntvC+k0iIiKidrwLNqM4OUdznWaXfc9t0dRvcv90IiIiIngWbEZxcgozfV7FWZ1mFWX95iPrN4mIiIg8CzbRXKd54bJOs4qifvMU9YubiIiIiGbBm2BTah3r2gcN2k+zLZnKrzuflZQEEBEREc3W38Y+AeBLm6OPNS/Z5ll65up8tGSq/E9UZ2MPAH70IRtLRERENAZfMpt1dZoHjFynWUWCyLpzK1o4EREREc3S6MGmTJ/Xrd6+yLO0bvX3qPIs3QCoWx1/zul0IiIimqtRg02ZPr+ueclGgjnf3aC+HdIDV6cTERHRHI2d2axbse3t9Plzyul0rk4nIiKi2Rkt2IziZIX61edetDnSkpXyddPpqyhO6t4vERERUXBejHFQmVKuy/RNZfr8uRsAv8D02TzmDsBLd6dDUya/k4X87wf54+LP9gA+l17+AcBhjG1cifqoGOeASUZwnBMFYJTWR1Gc3AG4rPjPBwAvfV4UVEcWAz3WvOQiz9K1q/PxgWR0fy790QcfeqbKjlV1W6MCwN7V9yU33XOYm+wS1Q8tTbYANjAtw5zdlGWxn0t/AdgB+Dzk9eLZ++o1dpVjzgfroT7TAMZ503fo9Pp25Hw2bT+PCY3LMmefs8zEasfp2zFnZZ9dr3a+JO6cB5syqD/VvOQ2z9IbV+czhChOHmEupsfMrvemDP7nC8EOAO7H/K4lCH5qeNngPV7lPC5RPWb62AFYwwQPg465KE7+N+S/3+AAk/V6D3OztfZej7yvPcx1qvVDiHLM+eDM9o08oHHe9B0eYD4/JwFwxfnsYRIbqu9wQuOyzEmsIA9H/23xV0aNYY5cr0a/1wLj1GzWrT7fj/2BWPJ7zX87AfCbqxPx2AmAawnMZymKk2UUJ08wF/mh2mMtYMo3/ozi5E3AXRGKbNkDgP9GcfIgD7ZDOIXpMMEeugozHOcnGL8DySmAJ8nIUT9t79dVs7ZjKe61T2OOSafBpiJVP4nV501k+um25iWXAd/02zqXsorZiOLktHTzdbVo7ATmQe/PmfR9XQH4NHDgsZrb2G1j5uN8AT829HiYye99EHLtaBs8nnga5C8xYlcc15nNuqzm1oc6PovewqSvj2F281uXA2ahvCIXoY9wd/N97gTAYxQnjzN54LmGyfDUbRzRx2WgXSZ6TUVznAMwD9I+ZLnGzrJO2Tmqt6OuUxfrjGm0rjjOgk1FVjOE6fMvpG6orhWSDxchn/wy9gkMTbJgD+h28bLtHMMGYT5ZYNj36mMWo4/bPvWGHOffuPPgYaQoMaH2ugaNpx5871VGuV65zGzOKatZqM1ueppqH0vQQY/U9/n2gDF0EOaTEwz3XkO6ke/61M1znB/1zoOZm+Af5m2T8oM+35vr7hxao1yvnASbpVYXVYLKahaY3Wxl7IvxYOQG3OfBYg/T5uX2yP/W8t+6GjII800xtWo74+ZDBs+GXru2cZzXHnvsspVgr68D6nt/XnrwkHHMKOPQVVP3urqHXaBZzcJbVGd1F1GcLNigOFw9bsAbmDY+W22/Q5m2OUf9xgLHFDdiFy25bP3Wu05RncIUyQexGNGym67XIpk65zivVqyWH2vcNQXZn1G/qFWr6J1aZw/gDwvH+mDh3zhKHkpsTINfg9caAO6CzbonhLrM3+TlWXqI4mSN6gvxCsCVw1MiR6RMou0NeA1TM9e6obY8tG0BXMmxr6G/GZ/ArBoedIcrmz1LJVP0M0zQ0eZzXkVxsh7jIVeO+Q9Xx5MFKpoVqJs8Sztdi2Wstc0CBT3OK6yiONn6uKmHfA+9Zxilp3JTkPZ5Ai0Obc06rqI46TTOQzP4NLqkkaueqg4wT7ahq90z3dlZkDMy7tu0mdjB7Jx1YePCJDe0l2iXrVhMqZVPnqWHPEs3eZZeAPgJ7bKmvtZTWSPZGc377Dx9znHe2sNMSlYmq8VuShfQdW3gPR5uajbrCpOt7vThK5maqrqwnvDiE6Q2q3HXeZa+tF1OIcHYDYAz6FvZTLKVT56le8maarNGvtZT2aQdgxc9rsMc5+2N2lybGmmymgd50NHMBrCvNtwEm3U/6PcOju+Luvca0mrW2ZOpPe2NbC2ZucHItGObG/FkspvPyWepnS0JdoGeZO40D7H3XfdO5jjvrJjKJ89IUKjJRBZBpubhlq2n4CbYrPyQfdkg3pG6QTm5TBLV0vZmG/wGXJBskvZGvJh4Wy7t9FaQv7vSHuRNduhXp8dx3t2C2516aQVdpv4t8KXWVRNw+trk3ZlBg82GaYo5BZrFRbDqAhjkTW+O5OalmZ7duroBF2QMahejTfbiqGg5VgiufEUyM++UL+88fc5xbsVq4g91IdI8pK2f/W4015rTuW8bOnRms+5i/n8DH9tHla0aplgnR0dpbl4HAK+GPpFjpM5I86A39YujqnYzwN+dtobyqmftpHacj9L2ZULj/I41+35o8QD1TXApvyPN4sRgy3Y0xgw2B+uR5bG6ADv0xQrBk8BF8z3ejLww7nfophl/HfpEhiLTW7NqNyJtjjSB07ZrmyM5TptxPuZ3oC2nGGKcb6Gv5xu74TsZmizztuIhTfNdLwN8uFUbOtisuiAdAm/kXqXuSZvB5vRpLlb7Pjd6GyQA0JzD+cRvgp8Vrwnidycr6wdtc1QylXGuLacYapxfwdTFNjmFvvSBBiBBoCYQPDqeJJOuebCabdnE0MHmvyr+fFb1moWGFkj/dnkuNAhNVsnGLh02vFW+bspT6RpBBJsAHqFvc9Q328hxriDBrnqx2pR63AZIM8W9b1jUrHmwWc2g5dpRY2Q2D5j3jjlVWYUfXJ4E2SVPxk03e282MZAboWbqp65Pbggmv1Ws7Nqiqftb9+0AIvWFmqCW4xxfEgzaTPLlxOukJ0mCP83n3hRMrqF7sJhl7aaL1kdlBwBnc2jkXkXKB7hXanh+VrzGt00MNH1uNe/LV1UzK2V/DX0SQ5KHHM1inT3sPORrbsrPV+uObdRxLgG+tqSAOwy5p13sVvvQImNe85C1mnh5Uicug801zDZlk88k9CX1HWdot70e+U1T7+Pb961ZpHcyxWkfOefJnXcbcsPS9mrss0tQmabcx6txrszmDjrO8yy9gu5zOYEJOGcXjIxBPmebD1Ca8hFt4/igDB1s3gJ4DeAnW3vhhiLP0q1sr/cSJtOp3WaP/KTJovl2Ez5Ad06a9+Yb1cV84gsVH6ALqG8tvk9N1s3Hz9SHcf4Kymbz0D9EUD+/QVcWospMS4yjebiZ3VT6oMFmnqU3eZZuGGRWy7N0l2fpWrKdNF1NN/2Dp78DzUzDpKbSJVuh3UFnkqQnoCYjs5N9w23hOO9IHu7OlC8/l1pcGpbmOtE2htE2eZ9VdvPF2CdAJBZRnLjeL9jKVJWyd5qvgY2PgUFfd9B9tz5m4BrJdK9m5fIBZmbJ1nE1WU2O8xp5lu6iOLmC7vu7juLkw8Sz796SYM9aVrOQZ+k2ipM9mh/MLjGjGU0Gm+SLE4S9bedfY59ABU1wMJm2XNI+RpsxmOqFvs0uQTaDLM0x/7J4PJu8Ged5lt5L4K4Zp++iOHnpabZ46lQL6zoG+7doLoVYRHGynMvDhOvV6ERzNeXtWX8Y+wSaRHFyEsXJI/S1UFU7gXhNplY1D2WbkUpzOM51tA3fucPQAFrsgtW1X+wGbIP0jS+ZzaJ/mqso+9nU42HoC7/8WMvTQJ+HflqU6a5y0fnORUsQ198l0VhKGSLtlFjBZh2jE/Jevd6TnHTyLD1EcXIB4AnN43YBM+3O79Qe1W5bXR/Y5Pu9R/Pv9TyKk9M5ZK5fAEAUJw+QlH4UJ0U/qXubH4AEe8VN4bvaHznuBwB/9G08XPo3T2GeHH7BkacYqavYwrxXK8GuBNFF8f53FxE55nsM9/leQt5rFCc7zLyvKfnFcl1u17KLzdQexOT3/ah8+Sv+5v0n9ZsX0H2vqyhOdmNvARoCiQs6b03Zwhq6h8NrzOBB4oXsWFCuHSlWcl5GcbKG6S/V+cIsX+w1KoKvZ8c9h4n09zDtOjo9VZSO2VQTU/TiW0VxsgVw0/W9SpCpmeIqAuDi873tE3Q2fL5F1ocXqPFxGswYuy53j2le2O+gm/a7HzmQ5jhvIc/SjWTANNOpd1GcTLL8wzOaABDoWdOdZ+le7vFNccgqipOr0B8Q/476vmkrAE9RnDwpV9x+ITVUbwB8RPsprlOYxraf2rQHiOLkVLK0n9C+aeoSHd5rFCdLydY8of2NdAXgUxQnD20bCkdxsnj2Xqs+X25/5gdfdwX5QfGaUG5uBwCvp3ZRP5IQqLKT5uFj4jhvqUXDd8DcoxjQdyT3Wc1vaW1p5lEbsP5m4VheewHd6sEiENvDZMkqu+nLD+E3mCe1vj+KIui8Rk2ms0UmU6N4r7WZzhaZTI0VzNNNbaaztNvBqsVxg68FmQhfbxCa4GBSwVmFHcwuOpMKnOXapmnw7UudJsd5N68A/Inmz+8EJrHxcvAzCpM2RrAyGyhtkLZovl9fYoJ15G28gKkffAPdRaLo73Yn9YDvYYKZPUxD3H9jmExaEXTewazy2sJcGBYw9ZhDPE2XA+z3+PrkuURFDagFRdBZfLYf8HWqf4luge1U2rvsAfzh+Jj/gp0HFE0A42vGR7NrytQfWO5hHhynGDRr2xzdOAikOc4HIgtKzmBmApssojh5yLPUh4eLyWix2YPtUoU1mu/dJ1GcrELe3OWF1BWcwVzU2lwoFi1ff8wW5iKgDdzKi4y6OMBcMNsc80uNZcdj7gF8hvmstE/9xWerrS2pOu7vE1oI8dnyTieNSou5epEbheZ4Cw8za5oHmKkGm73qsMcWxckldN/P1sXCEY7zYbVs+L6S+s1gg5MBNK0bKVj9TPMsXcvsbFPMcW372D55AZhBDuBlafV22xrLNtYA3pdXnJemhy9h/8m4WF2/Ll8AS7Ubv8J+lrLI0n1T9yGtSy6hH/Rd9F7URZ1opkqW8Kj+UX4DjWN/YmNph68dJqYaJBfXCu0uQa8GPp0yjvMBtWz4/iCzYKSjbeI+RMD3h+L4pyE3ef9mByG5OF9FcXIDe3WXhcp6RJneWgNYS7bpDv2DzgPM9NnbY9Nnch43AG5kEZLmyaNJ7Sp6CXYv5OnV5ud7gCkv6LWynXrZofkmfA6/OgP8onjNFG5mRcDlpI/t0OThW1OnCZg6VJfvWTPOfeuAMbXtZK+gnzl8BPD7sKczfbLITtXNYaBTeAtdsPsGwNlA5zCqo9tVysXLViDWqr2PRPUvex73FhVBZsUx11GcbNA9ADzAZFJU08DF5xvFyVuYwLpPWUBlQE1ObdFcarH0rIGvZtzZfspucyEtZjuanAA4Dygj8Aa6QOPeVk/iFjTjfOHZOFfV6Q1+FkotG75rF5DNnbYMbiWB6RAOaP4+l56WofTWuDe6ZOmKjGNls/IjevWQLB23qNFsejotAq9OLQueBYDfNEevsYcJbDddgj35OxdRnNyWjqn5bDcwpQjB1ndM0Afl61bwYNWhTNVpAhqrN+GWAeG2tFlBk0tpej3p34Tc6DQ3xmJmxjWOcwdaNnz3tQOAFyR20S6u9WGB2yX86CxhVWOwWZCbxBYmOFri6+rzH0ovK+qlPtjKtJWCzlN8XXleDgK3MNNnVp7w5bzvARS1M+f49n3+BbP/78bW08ezKf1zmPdY/nEUx9zB4mdL9kg2YoPmbgyXUZz4kInWBDSHETJn38iz9KLFjh8PUZxgqgFny+nzUfqFcpy707LhO1Wz0XHEpVUUJ8GVxKmDzbJS4OmMfPBO64AkmHSazpaLnncXPlJ5j+abcNGHdrSsT4tV+L6Mw1cwU4qarMOdZDinOA31Dros1e3I74/j3JE8S68k6TH2zluT1KKJu2+8mBmw6e9jnwBRKCSjpsnkXMsNZCyaVc6AJ4s8JDt2Bt1newLTH9eH6TC1lm2ORr0JcZw79wphbKwwhqlmhS9D2ymKwSaRXdob18MYFxPZGEFVw+ZTdrBDwPk4lYt1yzZHvtRycZw7Uhr71EKLem8fFe0gg6GeRm+7N3rJwfcf85jkB9Hn6T+Idi8BeQvdQq8iwHAWPMhiO+2TvndTOC0XTZzCZDjPJvD7aNPmyJc6rjbj/AHA68HPSEx9nB/TsuE7GUP2C3chqCbvqsxmFCePMDVTXf73UX78dNwDun+2T5juk1uQSgvMNFZRnDhpWyK/Qe2xNr62EZKaZm2AvoCpg/RWiwzcxqdFLC3H+TnHeX+yS1QwwYcDU51CL5yGFDtpM5s/9DzOpOqnHOvbSP4HGydB9uRZehPFiXZnqpVMo74eKmslAY32wnuA502ipS9usRtXk6Wv+0jLbJG2zZF3589xPoo2Dd9nS4I0zbh0vti5RNPkfYVAHjA6rUbvgD+MavxswvQawEflaxcwMwA3Nve47rgb141HU7WVZJWutiZrFcXJIc/Sq6HPS0vOXZt1db1LUBsc5w61bPg+Z9qHjtFKU5T9P5ehbGHpKthk24YjetTBkuc61FidwLTtuUSPjQKAbxqDtx1fa5tBwNCkB6c2y+Nb0/cH6IKFHYCfozj5eeDzeU61OcZEx/lmSuP8uZa1y7Mj91VtacqYDxw3MA8NTVawnH0dIfY4uAo2EeoWTD25voGQQ3mWFhsDtKm7Kbafe5Dm2VuYgKNyIVgp4CqelLuUZuxgpuim5gz6HpxeNH2XQEu70nSsKdMPMNP3jSY4zr0rSWiLDd9raT+TUR848izdRnGyR/M4HqLJuybItWnrLNiEubgy2PzWL2OfAA1Lsm9At4Vc5ygFJfLvAOZ3dAp702g7AFNYtf0dmVYspnI1n8eoTd8lYHozxrGHxHHuHhu+f0+auGse5LaeTE3fQreg7RLTTAZ8oe2z+ZeFYzGwKpEfhY2MBQN4z8niFJvZtAV4A/5Cnvin0vRdO30+ORzno2DD929pFt0Aniy6abFBwmoqfYOraIPNC5iL+S3Ml9QlwFlIgEVG2+B7B7Ot2i1MUf7LPEv/4VM7FKomN2Lf6sQ2COQGLJlK7fTomE3fg14QyHHuFhu+fyW/Z01Wcz92Kc0zmt9Lsf3rZKmm0WVAf9ciQLIDRYbu3zA1iHUX8OD2++yhbrrpAHOB3MLUMDF7GQCZ9trCj+zW1ZQXSRwjdWwX0E1LTanp+6RwnLvFhu9f/AbdeLsd+kRaegtdRvZXTDh+6rVdZZ6luzxLN3mW3uRZ+jrP0n/C1BVUXbx/7XO8UDSsltsC+DHP0os8S9cMNMMimegfMV72Zwvgp1BvwJKx0L63Yncbsozj3C02fAegWxhUJHK8IQ+7mu9u0k3ere+NLoO+qn5q0h+WRVULBLZ5ljLTErg8S4uejz/B3Q1iCzOVeDbF/oJtyGer/Vyd7W4zNxznzl1hpjX8Eldospr3nt5ftdnWyXYfsB5sAl/qp6rSvdoC3iA1NHKdfEsO0suzdC81bsWMgO0bxR4ms/RSbr4+rL50pc3nuYriJLgV4r7gOHdDgqgLzHPBkDaueDvoWXQkD0aajOtiqv25/zbkPx7FyScc7yF14VmBrjNRnDzheLC59nFLPXJLFtGV+wi2ubDsYW7kW5gs+SyzHOQ/jnOieRk62Kzaq3YP8xQ6qycw2fGiateH2QbgVE9WWdatYv48wylDCgzHOVG4hg4264Kr2zxLJ7uyqi25kH5E9W4B/5xb8E1EREThG6RmsyArEqsCqOsRGyuP4Q2qA83O+wMTERER+WzQYFPUFb0+TL0rvoZkeOtWkb13dS5ERERELrkINuvqEBcIvBGtFMLXtVbxru8XERERkS2DB5vShqKuqHsVau9Nydo+or7/F6fQiYiIKFguMptAc8PSh9ACTgk0n9C8F7JvW2cRERERWeMk2JSWPk0tKx4CWzB0h+ZAc81WHkRERBQyV5lNQJfBe5LFNJMVxclJFCePADSZWmY1iYiIKGjOgk3Jbjbt9HAC4HGqU+qlqXNNwMysJhEREQXPZWYTMPviajzI7kOTISUAH9E8dV7QfhZEREREkzXoDkLH1OyXfswWwCvfV2tHcXIJ07Rd2zN0m2fp2YCnREREROQF15lNAPjc4rVLAH/6WscZxcmp1GfeQR9oAiaIJiIiIgreGMHmXy1fX9RxPkmDdC9EcfIGZtq8SyAc/K5JRERERADwYoRjdg0YlwA+RXGyBnA71uIaWbx0je7vAzDvhYiIiCh4Tms2JTP5ydI/twZwn2dp0wr33mSV+Qpmf3Nb2dUz2V2JiIiIKFiug80n2M/q7WACz/e2s51SK/oLzFS57anvXZ6lLy3/m0RERERecRZsyortodsZ7QG8hwlAd22znlGcLGFaFy0B/Izhaytv8yy9GfgYRERERKNxEmyWelCOYQegaJ1UnrY+wdeemAuMt2iH0+lEREQUrMGDzdKuOiHte27THsBL33uJEhEREXXhovXRGzDQrHMK4GHskyAiIiIawqDBpiywuRzyGIE4n+p+8ERERER1BptGl+nzPzGfBuZ7fN0dqcuK+wPMdPoo/UOJiIiIhjBkU/cHtA80v+udWcqO+toIfQPg93KQKIH2bzDnrf0MTgD8B8Br62dIRERENJIhM5t30E+hHwBc5Fm6qfn3bOzcY9MWwE3dSnJZhf8Afc3qRZ6laxsnR0REROSDQVejR3HyALPzTp0NTJClWo0tQeclxlt0tIHJvqrbFSkDbwaaREREFBwXrY+qAs4DTGbwvuO/u4AJ4IbY3ee5PYA/AKy71lRKw/h3OH6uDDSJiIgoSK6auj8POHcwAZaVfc2lrnMJs7WkrWn2HcxuRBuL53kCM61+XvpjBppEREQULJfbVRYB532epVcDHmcJE9B1DTp3AF4PuSpctu58A+CKgSYRERGFzFmw6ZJkED+ifcC5ybOUq8GJiIiILHGxg5BzstjoouVf6/J3iIiIiKhGkMEmAMhq8cpWSkfcc39yIiIiIruCDTaFuj0RgA+DnQURERHRTIUebKpXkbfpm0lEREREOgw2De5HTkRERDSAoINNqcHU1GF+HvpciIiIiOYo6GBTaLKbnEInIiIiGgCDTf1riIiIiKilOQSbmnpM1mwSERERDWAOwWZj1tLW3udERERE9C0Gm5xCJyIiIhrMi7FPYGh5lh6iOLkFsKx4yb3L8yEiIiKak/8H9T2CqjAMEFoAAAAASUVORK5CYII=" alt="Horizontal" class="login-logo">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAAYCAYAAACLOiSEAAACrklEQVR4nO2dMW4WMRCFbbR3oEfcgEOk4wKR4CIcgwulR8kNqOgp0gUk0+6+2fhlMgsS8vd1/m0/j9eWtXoa79/Htw/v247R2ruWoEt5jHGs78cWx9qT/jpAUs8iek30XL2bb9DLYvQevr89lD99/XhsXhv95HnK8zcjDLPC1fjORny+dIbZcSH8ecRuPjeP94fy7c8708OEk67/1+txLRq/239erz3ty29KagAA/zEcgACwLByAALAsW2vts/z2ZV/o4kkN9eCMR1em6MFk9Wy9zjdUF59H1eMsEqNVj9R0GPJDV49N66XaWqrG09L9qq2D3jweR1zvXH9HL7qAVc/MM9+hbv9qfN7zc56vzj/o/diXeQMEgGXhAASAZeEABIBl2ZynFfLg1KQRnGOh40WPZm4KWX2X16fhTGu9h6eeqJvvyQDz6nnvahpblHPhmvbWQzSEeMP8zPNyeZva3ptUU4HoYc3xeXm5vMarPTSn59fT7WcdP5vnl8tj1P2i7XkDBIBl4QAEgGXhAASAZdmynlm6vXZ3eqb+ao8tkNSz6sm8QvUUq/JZfN6dVifz6IrxlpczG1+yv5d3nmHOw8zqZ/MC8x7jEW0fPdycJxg9ySNZT5A3QABYFg5AAFgWDkAAWJbNfc/OehAuT1DvtiY9Pdve3U027S1VTzTr6YXhq3mXqeFf4IH1WTEQ95cWi6aaoYdEPxdwdvx0h0Lrl9wNzunn9Woe4iu+CJoc39zVlzJvgACwLByAALAsHIAAsCxbb+2X/PZ02vIZ4ufg5p6g/U8P0z+bJ5fNw/vb3+PLzsd+TzDclXV5VAaTOBfvzpo8r6vzILN3lasmovV01QM2cn5AUdf1m7ta+f9sOeIduez+utaE9vNz6uP3vswbIAAsCwcgACwLByAALMsfAVTpghJxWYIAAAAASUVORK5CYII=" alt="" class="login-bar">
     <form id="loginForm">
-      <label>Correo</label>
-      <input type="text" id="loginEmail" required autocomplete="username">
-      <label>Contraseña</label>
-      <input type="password" id="loginPassword" required autocomplete="current-password">
+      <input type="text" id="loginEmail" placeholder="Correo" required autocomplete="username">
+      <input type="password" id="loginPassword" placeholder="Contraseña" required autocomplete="current-password">
       <div class="login-error" id="loginError"></div>
-      <div class="modal-actions" style="justify-content:stretch; margin-top:14px;">
-        <button type="submit" class="btn-primary" style="width:100%;">Iniciar sesión</button>
-      </div>
+      <button type="submit" class="login-btn">Ingresar</button>
     </form>
   </div>
 </div>
@@ -318,6 +358,7 @@
     <button class="tab-btn active" data-tab="equipos">💻 Equipos</button>
     <button class="tab-btn" data-tab="monitores">🖥️ Monitores</button>
     <button class="tab-btn" data-tab="impresoras">🖨️ Impresoras</button>
+    <button class="tab-btn" data-tab="tablets">📱 Tablets</button>
   </div>
 
   <section id="section-equipos" class="tab-section">
@@ -383,6 +424,26 @@
   </div>
 
   <div id="tableWrapImp"></div>
+  </section>
+
+  <section id="section-tablets" class="tab-section" hidden>
+  <div class="stats" id="statsTab"></div>
+
+  <div class="toolbar">
+    <input type="text" id="fBuscarTab" placeholder="Buscar por serial, marca, modelo, usuario...">
+    <select id="fSedeTab"><option value="">Todas las sedes</option></select>
+    <select id="fEstadoTab">
+      <option value="">Todos los estados</option>
+      <option value="Activa">Activa</option>
+      <option value="En mantenimiento">En mantenimiento</option>
+      <option value="En bodega">En bodega</option>
+      <option value="Dado de baja">Dado de baja</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn-secondary btn-small" id="btnLimpiarTab">Limpiar filtros</button>
+  </div>
+
+  <div id="tableWrapTab"></div>
   </section>
 </main>
 
@@ -572,6 +633,66 @@
     </form>
   </div>
 </div>
+
+<div class="overlay" id="overlayTab">
+  <div class="modal">
+    <h2 id="modalTitleTab">Nueva tablet</h2>
+    <form id="tabletForm">
+      <input type="hidden" id="tabletId">
+      <div class="form-grid">
+        <div>
+          <label>Sistema</label>
+          <select id="tabSistema" required>
+            <option value="Android">Android</option>
+            <option value="iOS">iOS</option>
+            <option value="Windows">Windows</option>
+          </select>
+        </div>
+        <div>
+          <label>Estado</label>
+          <select id="tabEstado" required>
+            <option value="Activa">Activa</option>
+            <option value="En mantenimiento">En mantenimiento</option>
+            <option value="En bodega">En bodega</option>
+            <option value="Dado de baja">Dado de baja</option>
+          </select>
+        </div>
+        <div>
+          <label>Marca</label>
+          <input type="text" id="tabMarca" placeholder="Samsung, Apple, Lenovo..." required>
+        </div>
+        <div>
+          <label>Modelo</label>
+          <input type="text" id="tabModelo" required>
+        </div>
+        <div>
+          <label>Número de serie</label>
+          <input type="text" id="tabSerial" required>
+        </div>
+        <div>
+          <label>Sede</label>
+          <input type="text" id="tabSede" list="listaSedes" required>
+        </div>
+        <div>
+          <label>Área / ubicación</label>
+          <input type="text" id="tabArea">
+        </div>
+        <div>
+          <label>Usuario asignado</label>
+          <input type="text" id="tabUsuario">
+        </div>
+        <div class="full">
+          <label>Observaciones</label>
+          <input type="text" id="tabObservaciones">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="btnCancelarTab">Cancelar</button>
+        <button type="submit" class="btn-ok">Guardar tablet</button>
+      </div>
+    </form>
+  </div>
+</div>
 </div>
 
 <script>
@@ -592,15 +713,18 @@ const db = firebase.firestore();
 const equiposRef = db.collection('equipos');
 const monitoresRef = db.collection('monitores_stock');
 const impresorasRef = db.collection('impresoras');
+const tabletsRef = db.collection('tablets');
 // ====================================================
 
 let equipos = [];
 let monitoresStock = [];
 let impresoras = [];
+let tablets = [];
 let activeTab = 'equipos';
 let unsubscribeSnapshot = null;
 let unsubscribeMon = null;
 let unsubscribeImp = null;
+let unsubscribeTab = null;
 
 function uid(){
   return 'eq_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
@@ -614,10 +738,12 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
     document.getElementById('section-equipos').hidden = activeTab !== 'equipos';
     document.getElementById('section-monitores').hidden = activeTab !== 'monitores';
     document.getElementById('section-impresoras').hidden = activeTab !== 'impresoras';
+    document.getElementById('section-tablets').hidden = activeTab !== 'tablets';
     const btnNuevo = document.getElementById('btnNuevo');
     if(activeTab === 'equipos') btnNuevo.textContent = '+ Nuevo equipo';
     else if(activeTab === 'monitores') btnNuevo.textContent = '+ Nuevo monitor';
-    else btnNuevo.textContent = '+ Nueva impresora';
+    else if(activeTab === 'impresoras') btnNuevo.textContent = '+ Nueva impresora';
+    else btnNuevo.textContent = '+ Nueva tablet';
   });
 });
 
@@ -649,13 +775,15 @@ auth.onAuthStateChanged(user=>{
     escucharCambios();
     escucharMonitores();
     escucharImpresoras();
+    escucharTablets();
   } else {
     loginScreen.style.display = 'flex';
     appRoot.style.display = 'none';
     if(unsubscribeSnapshot){ unsubscribeSnapshot(); unsubscribeSnapshot = null; }
     if(unsubscribeMon){ unsubscribeMon(); unsubscribeMon = null; }
     if(unsubscribeImp){ unsubscribeImp(); unsubscribeImp = null; }
-    equipos = []; monitoresStock = []; impresoras = [];
+    if(unsubscribeTab){ unsubscribeTab(); unsubscribeTab = null; }
+    equipos = []; monitoresStock = []; impresoras = []; tablets = [];
   }
 });
 
@@ -721,6 +849,24 @@ async function guardarImpresoraEnDB(impresora){
 }
 async function eliminarImpresoraEnDB(id){
   await impresorasRef.doc(id).delete();
+}
+
+function escucharTablets(){
+  if(unsubscribeTab) return;
+  unsubscribeTab = tabletsRef.onSnapshot(
+    (snapshot)=>{
+      tablets = snapshot.docs.map(d=> ({ id: d.id, ...d.data() }));
+      renderAllTab();
+    },
+    (error)=> console.error(error)
+  );
+}
+async function guardarTabletEnDB(tablet){
+  const { id, ...datos } = tablet;
+  await tabletsRef.doc(id).set(datos);
+}
+async function eliminarTabletEnDB(id){
+  await tabletsRef.doc(id).delete();
 }
 
 // ---------- Monitores dinámicos en el formulario ----------
@@ -965,11 +1111,76 @@ function editarImpresora(id){
   if(p) abrirModalImpresora(p);
 }
 
+// ---------- Modal Tablet ----------
+const overlayTab = document.getElementById('overlayTab');
+const tabletForm = document.getElementById('tabletForm');
+const modalTitleTab = document.getElementById('modalTitleTab');
+
+function abrirModalTablet(tablet){
+  tabletForm.reset();
+  document.getElementById('tabletId').value = tablet ? tablet.id : '';
+  modalTitleTab.textContent = tablet ? 'Editar tablet' : 'Nueva tablet';
+  if(tablet){
+    document.getElementById('tabSistema').value = tablet.sistema;
+    document.getElementById('tabEstado').value = tablet.estado;
+    document.getElementById('tabMarca').value = tablet.marca;
+    document.getElementById('tabModelo').value = tablet.modelo;
+    document.getElementById('tabSerial').value = tablet.serial;
+    document.getElementById('tabSede').value = tablet.sede;
+    document.getElementById('tabArea').value = tablet.area || '';
+    document.getElementById('tabUsuario').value = tablet.usuario || '';
+    document.getElementById('tabObservaciones').value = tablet.observaciones || '';
+  } else {
+    document.getElementById('tabEstado').value = 'Activa';
+  }
+  overlayTab.classList.add('open');
+}
+function cerrarModalTablet(){ overlayTab.classList.remove('open'); }
+document.getElementById('btnCancelarTab').addEventListener('click', cerrarModalTablet);
+overlayTab.addEventListener('click', (e)=>{ if(e.target === overlayTab) cerrarModalTablet(); });
+
+tabletForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const id = document.getElementById('tabletId').value || uid();
+  const tablet = {
+    id,
+    sistema: document.getElementById('tabSistema').value,
+    estado: document.getElementById('tabEstado').value,
+    marca: document.getElementById('tabMarca').value.trim(),
+    modelo: document.getElementById('tabModelo').value.trim(),
+    serial: document.getElementById('tabSerial').value.trim(),
+    sede: document.getElementById('tabSede').value.trim(),
+    area: document.getElementById('tabArea').value.trim(),
+    usuario: document.getElementById('tabUsuario').value.trim(),
+    observaciones: document.getElementById('tabObservaciones').value.trim(),
+  };
+  try{
+    await guardarTabletEnDB(tablet);
+    cerrarModalTablet();
+  }catch(err){
+    alert('No se pudo guardar la tablet. Revisa tu conexión e inténtalo de nuevo.');
+    console.error(err);
+  }
+});
+async function eliminarTablet(id){
+  const t = tablets.find(x=>x.id===id);
+  if(!t) return;
+  if(confirm(`¿Eliminar la tablet ${t.marca} ${t.modelo} (${t.serial})?`)){
+    try{ await eliminarTabletEnDB(id); }
+    catch(err){ alert('No se pudo eliminar la tablet.'); console.error(err); }
+  }
+}
+function editarTablet(id){
+  const t = tablets.find(x=>x.id===id);
+  if(t) abrirModalTablet(t);
+}
+
 // ---------- btnNuevo según pestaña activa ----------
 document.getElementById('btnNuevo').addEventListener('click', ()=>{
   if(activeTab === 'equipos') abrirModal(null);
   else if(activeTab === 'monitores') abrirModalMonitor(null);
-  else abrirModalImpresora(null);
+  else if(activeTab === 'impresoras') abrirModalImpresora(null);
+  else abrirModalTablet(null);
 });
 
 // ---------- Filtros ----------
@@ -1001,6 +1212,16 @@ const fEstadoImp = document.getElementById('fEstadoImp');
 document.getElementById('btnLimpiarImp').addEventListener('click', ()=>{
   fBuscarImp.value=''; fSedeImp.value=''; fEstadoImp.value='';
   renderTablaImp();
+});
+
+// Tablets
+const fBuscarTab = document.getElementById('fBuscarTab');
+const fSedeTab = document.getElementById('fSedeTab');
+const fEstadoTab = document.getElementById('fEstadoTab');
+[fBuscarTab, fSedeTab, fEstadoTab].forEach(el=> el.addEventListener('input', renderTablaTab));
+document.getElementById('btnLimpiarTab').addEventListener('click', ()=>{
+  fBuscarTab.value=''; fSedeTab.value=''; fEstadoTab.value='';
+  renderTablaTab();
 });
 
 function actualizarSelectSedes(){
@@ -1239,10 +1460,81 @@ function renderAllImp(){
   renderTablaImp();
 }
 
+// ================= TABLETS =================
+function actualizarSelectSedesTab(){
+  const sedes = [...new Set(tablets.map(t=>t.sede).filter(Boolean))].sort();
+  fSedeTab.innerHTML = '<option value="">Todas las sedes</option>' + sedes.map(s=>`<option value="${escapeAttr(s)}">${escapeHtml(s)}</option>`).join('');
+}
+function filtrarTablets(){
+  const texto = fBuscarTab.value.toLowerCase();
+  return tablets.filter(t=>{
+    if(fSedeTab.value && t.sede !== fSedeTab.value) return false;
+    if(fEstadoTab.value && t.estado !== fEstadoTab.value) return false;
+    if(texto){
+      const blob = [t.marca,t.modelo,t.serial,t.usuario,t.area].join(' ').toLowerCase();
+      if(!blob.includes(texto)) return false;
+    }
+    return true;
+  });
+}
+function tagClaseTab(estado){
+  return {
+    'Activa':'tag-activo',
+    'En mantenimiento':'tag-mantenimiento',
+    'En bodega':'tag-bodega',
+    'Dado de baja':'tag-baja',
+  }[estado] || 'tag-activo';
+}
+function renderTablaTab(){
+  const lista = filtrarTablets();
+  const wrap = document.getElementById('tableWrapTab');
+  if(lista.length === 0){
+    wrap.innerHTML = `<div class="empty-state">No hay tablets que coincidan con los filtros.<br>${tablets.length===0 ? 'Agrega la primera con el botón "Nueva tablet".' : ''}</div>`;
+    return;
+  }
+  const filas = lista.map(t=>`
+    <tr>
+      <td data-label="Sistema">${escapeHtml(t.sistema)}</td>
+      <td data-label="Marca/Modelo"><strong>${escapeHtml(t.marca)}</strong> ${escapeHtml(t.modelo)}<br><span style="color:var(--muted); font-size:.78rem;">S/N: ${escapeHtml(t.serial)}</span></td>
+      <td data-label="Sede">${escapeHtml(t.sede)}${t.area ? '<br><span style="color:var(--muted); font-size:.78rem;">'+escapeHtml(t.area)+'</span>' : ''}</td>
+      <td data-label="Usuario">${escapeHtml(t.usuario) || '<span style="color:var(--muted)">Sin asignar</span>'}</td>
+      <td data-label="Estado"><span class="tag ${tagClaseTab(t.estado)}">${escapeHtml(t.estado)}</span></td>
+      <td data-label="Acciones" class="actions-cell">
+        <button class="btn-secondary btn-small" onclick="editarTablet('${t.id}')">Editar</button>
+        <button class="btn-danger btn-small" onclick="eliminarTablet('${t.id}')">Eliminar</button>
+      </td>
+    </tr>`).join('');
+  wrap.innerHTML = `
+    <table>
+      <thead><tr><th>Sistema</th><th>Marca / Modelo</th><th>Sede</th><th>Usuario</th><th>Estado</th><th>Acciones</th></tr></thead>
+      <tbody>${filas}</tbody>
+    </table>`;
+}
+function renderStatsTab(){
+  const total = tablets.length;
+  const activas = tablets.filter(t=>t.estado==='Activa').length;
+  const bodega = tablets.filter(t=>t.estado==='En bodega').length;
+  const sedes = new Set(tablets.map(t=>t.sede).filter(Boolean)).size;
+  const cards = [
+    ['Total tablets', total],
+    ['Activas', activas],
+    ['En bodega', bodega],
+    ['Sedes registradas', sedes],
+  ];
+  document.getElementById('statsTab').innerHTML = cards.map(([lbl,num])=>`
+    <div class="stat-card"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>
+  `).join('');
+}
+function renderAllTab(){
+  actualizarSelectSedesTab();
+  renderStatsTab();
+  renderTablaTab();
+}
+
 // ---------- Exportar / Importar ----------
 document.getElementById('btnExport').addEventListener('click', ()=>{
-  const datos = activeTab === 'equipos' ? equipos : activeTab === 'monitores' ? monitoresStock : impresoras;
-  const nombre = activeTab === 'equipos' ? 'inventario_equipos' : activeTab === 'monitores' ? 'inventario_monitores' : 'inventario_impresoras';
+  const datos = activeTab === 'equipos' ? equipos : activeTab === 'monitores' ? monitoresStock : activeTab === 'impresoras' ? impresoras : tablets;
+  const nombre = activeTab === 'equipos' ? 'inventario_equipos' : activeTab === 'monitores' ? 'inventario_monitores' : activeTab === 'impresoras' ? 'inventario_impresoras' : 'inventario_tablets';
   const blob = new Blob([JSON.stringify(datos, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1268,11 +1560,16 @@ document.getElementById('btnExportCsv').addEventListener('click', ()=>{
     const filas = monitoresStock.map(m=> [m.marca,m.modelo,m.serial,m.sede,m.area,m.estado,m.observaciones]
       .map(v=> `"${String(v||'').replace(/"/g,'""')}"`).join(','));
     descargarCsv(headers, filas, 'inventario_monitores');
-  } else {
+  } else if(activeTab === 'impresoras'){
     const headers = ['Tipo','Marca','Modelo','Serial','Sede','Area','Usuario','Estado','Observaciones'];
     const filas = impresoras.map(p=> [p.tipo,p.marca,p.modelo,p.serial,p.sede,p.area,p.usuario,p.estado,p.observaciones]
       .map(v=> `"${String(v||'').replace(/"/g,'""')}"`).join(','));
     descargarCsv(headers, filas, 'inventario_impresoras');
+  } else {
+    const headers = ['Sistema','Marca','Modelo','Serial','Sede','Area','Usuario','Estado','Observaciones'];
+    const filas = tablets.map(t=> [t.sistema,t.marca,t.modelo,t.serial,t.sede,t.area,t.usuario,t.estado,t.observaciones]
+      .map(v=> `"${String(v||'').replace(/"/g,'""')}"`).join(','));
+    descargarCsv(headers, filas, 'inventario_tablets');
   }
 });
 function descargarCsv(headers, filas, nombre){
@@ -1298,8 +1595,8 @@ document.getElementById('fileImport').addEventListener('change', (e)=>{
       const datos = JSON.parse(ev.target.result);
       if(!Array.isArray(datos)) throw new Error('Formato inválido');
 
-      const ref = activeTab === 'equipos' ? equiposRef : activeTab === 'monitores' ? monitoresRef : impresorasRef;
-      const nombre = activeTab === 'equipos' ? 'equipos' : activeTab === 'monitores' ? 'monitores' : 'impresoras';
+      const ref = activeTab === 'equipos' ? equiposRef : activeTab === 'monitores' ? monitoresRef : activeTab === 'impresoras' ? impresorasRef : tabletsRef;
+      const nombre = activeTab === 'equipos' ? 'equipos' : activeTab === 'monitores' ? 'monitores' : activeTab === 'impresoras' ? 'impresoras' : 'tablets';
 
       const reemplazar = confirm(`Se encontraron ${datos.length} registros de ${nombre} en el archivo. ¿Reemplazar el inventario actual de esta pestaña? (Cancelar para combinar en lugar de reemplazar)`);
 
